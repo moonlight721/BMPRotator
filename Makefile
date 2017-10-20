@@ -1,7 +1,7 @@
 compiler=gcc
-out=program
+out=rotate
 incl=include
-src=src/
+src=src/rotate.c
 flags= -Ofast -pedantic -pedantic-errors -Wall -Werror -std=c11 -I include -o $(out) -I $(incl) $(src)
 
 all: $(src)
