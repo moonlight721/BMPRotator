@@ -35,9 +35,9 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
   RGBTRIPLE inp[src_height][src_width];
 
   // iterate over infile's scanlines
-  for (int i = 0, biHeight = abs(src_height); i < biHeight; i++) {
+  for (int i = 0; i < src_height; i++) {
     // iterate over pixels in scanline
-    for (int j = 0, biWidth = abs(src_width); j < biWidth; j++) {
+    for (int j = 0; j < src_width; j++) {
       // read RGB triple from infile
       fread(&inp[i][j], sizeof(RGBTRIPLE), 1, in);
     }
@@ -63,7 +63,6 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
   const double maxx = max(0, max(point1x, max(point2x, point3x)));
   const double maxy = max(0, max(point1y, max(point2y, point3y)));
 
-  // swapping width and height because of rotating
   bi.biWidth = (int)ceil(maxx - minx);
   bi.biHeight = (int)ceil(maxy - miny);
 
@@ -74,21 +73,19 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
 
   RGBTRIPLE ou[bi.biHeight][bi.biWidth];
 
-  // iterate over outfile's scanlines
   for (int x = 0; x < bi.biWidth; x++) {
-    // iterate over pixels in line
     for (int y = 0; y < bi.biHeight; y++) {
-      int srcx = (int)ceil((x + minx) * cosine + (y + miny) * sine);
-      int srcy = (int)ceil((y + miny) * cosine - (x + minx) * sine);
-      if (srcx >= 0 && srcx < src_height && srcy >= 0 && srcy < src_width) {
-        ou[x][y]=inp[srcx][srcy];
+      int srcx = (int)((x + minx) * cosine + (y + miny) * sine);
+      int srcy = (int)((y + miny) * cosine - (x + minx) * sine);
+      if (srcx >= 0 && srcx < src_width && srcy >= 0 && srcy < src_height) {
+        ou[y][x] = inp[srcy][srcx];
       }
     }
   }
 
   for (int i = 0; i < bi.biHeight; i++) {
     for (int j = 0; j < bi.biWidth; j++) {
-        fwrite(&ou[i][j], sizeof(RGBTRIPLE), 1, out);
+      fwrite(&ou[i][j], sizeof(RGBTRIPLE), 1, out);
     }
     // add padding
     for (int k = 0; k < padding; k++) fputc(0x00, out);
