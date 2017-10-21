@@ -38,7 +38,8 @@ image* img_rotate(const double degrees, image* const src_img) {
     for (int y = 0; y < rotated->height; y++) {
       int srcx = (int)ceil((x + minx) * cosine + (y + miny) * sine);
       int srcy = (int)ceil((y + miny) * cosine - (x + minx) * sine);
-      if (srcx >= 0 && srcx < src_img->width && srcy >= 0 && srcy < src_img->height) {
+      if (srcx >= 0 && srcx < src_img->width && srcy >= 0 &&
+          srcy < src_img->height) {
         rotated->pixels[y][x] = src_img->pixels[srcy][srcx];
       }
     }

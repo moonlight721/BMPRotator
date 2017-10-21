@@ -1,6 +1,6 @@
-#include <stdint.h>
-#include <stdbool.h>
 #include <image.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 typedef uint8_t BYTE;
@@ -14,8 +14,7 @@ typedef struct {
   WORD reserved1;
   WORD reserved2;
   DWORD off_bits;
-} __attribute__((__packed__))  
-BITMAPFILEHEADER;
+} __attribute__((__packed__)) BITMAPFILEHEADER;
 
 typedef struct {
   DWORD size;
@@ -29,8 +28,7 @@ typedef struct {
   LONG y_pels_per_meter;
   DWORD clr_used;
   DWORD clr_important;
-} __attribute__((__packed__))  
-BITMAPINFOHEADER;
+} __attribute__((__packed__)) BITMAPINFOHEADER;
 
 image* from_bmp(FILE* const);
 void to_bmp(FILE* const, image* const);

@@ -8,7 +8,7 @@ typedef uint8_t BYTE;
 typedef struct pixel {
   BYTE red;
   BYTE green;
-  BYTE blue; 
+  BYTE blue;
 } pixel;
 
 typedef struct image {

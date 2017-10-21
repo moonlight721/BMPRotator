@@ -21,16 +21,12 @@ image* from_bmp(FILE* inptr) {
 
   int padding = (4 - (img->width * sizeof(pixel)) % 4) % 4;
 
-  // iterate over infile's scanlines
   for (int i = 0; i < img->height; i++) {
     img->pixels[i] = calloc(img->width, sizeof(pixel));
-    // iterate over pixels in scanline
     for (int j = 0; j < img->width; j++) {
-      // read RGB triple from infile
       fread(&img->pixels[i][j], sizeof(pixel), 1, inptr);
     }
 
-    // skip over padding, if any
     fseek(inptr, padding, SEEK_CUR);
   }
   return img;
@@ -45,23 +41,21 @@ void to_bmp(FILE* outptr, image* img) {
   bi.planes = 1;
   bi.height = img->height;
   bi.width = img->width;
-  bi.size_image = bi.height*bi.width*sizeof(pixel);
+  bi.size_image = bi.height * bi.width * sizeof(pixel);
   bi.x_pels_per_meter = 0;
   bi.y_pels_per_meter = 0;
   bi.clr_used = 0;
   bi.clr_important = 0;
 
   BITMAPFILEHEADER bf;
-  bf.type=0x4d42;
-  bf.off_bits=54;
-  bf.size = bi.size+bf.off_bits;
+  bf.type = 0x4d42;
+  bf.off_bits = 54;
+  bf.size = bi.size + bf.off_bits;
   bf.reserved1 = 0;
   bf.reserved2 = 0;
 
-  // write outfile's BITMAPFILEHEADER
   fwrite(&bf, sizeof(BITMAPFILEHEADER), 1, outptr);
   fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, outptr);
-
 
   int padding = (4 - (img->width * sizeof(pixel)) % 4) % 4;
 
@@ -69,8 +63,6 @@ void to_bmp(FILE* outptr, image* img) {
     for (int j = 0; j < img->width; j++) {
       fwrite(&img->pixels[i][j], sizeof(pixel), 1, outptr);
     }
-    // add padding
     for (int k = 0; k < padding; k++) fputc(0x00, outptr);
   }
 }
-
