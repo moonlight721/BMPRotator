@@ -32,10 +32,8 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
   // determine padding for scanlines
   int padding = (4 - (src_width * sizeof(RGBTRIPLE)) % 4) % 4;
 
-  // height and width are swapped
   RGBTRIPLE inp[src_height][src_width];
 
-  puts("I've started itereate over infile's scanlines");
   // iterate over infile's scanlines
   for (int i = 0, biHeight = abs(src_height); i < biHeight; i++) {
     // iterate over pixels in scanline
@@ -47,10 +45,8 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
     // skip over padding, if any
     fseek(in, padding, SEEK_CUR);
   }
-  puts("I've finished itereate over infile's scanlines");
 
-  // M_PI doesn't work and I don't know why
-  angle *= 2 * acos(-1) / 360;  // radians
+  angle *= 2 * M_PI / 360;  // radians
   const double cosine = cos(angle);
   const double sine = sin(angle);
 

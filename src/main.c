@@ -1,7 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 bool rotate(const double angle, FILE *const in, FILE *const out);
 
@@ -37,9 +36,7 @@ int main(int argc, char *argv[]) {
     return 4;
   }
 
-  puts("I've went to rotate");
   bool result = rotate(angle, inptr, outptr);
-  puts("I've returned from rotate");
 
   // close infile
   fclose(inptr);
