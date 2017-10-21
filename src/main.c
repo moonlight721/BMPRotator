@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-bool rotate(const double angle, FILE *const in, FILE *const out);
+#include <image.h>
+#include <bmp.h>
 
 int main(int argc, char *argv[]) {
   // ensure proper usage
@@ -36,7 +37,17 @@ int main(int argc, char *argv[]) {
     return 4;
   }
 
-  bool result = rotate(angle, inptr, outptr);
+  image* src = from_bmp(inptr);
+  image* rotated = img_rotate(angle, src);
+  img_free(src);
+
+  if (rotated == NULL) {
+    fprintf(stderr, "I couldn't rotate your image.\n");
+    return 5;
+  }
+
+  to_bmp(outptr, rotated);
+  img_free(rotated);
 
   // close infile
   fclose(inptr);
@@ -44,10 +55,5 @@ int main(int argc, char *argv[]) {
   // close outfile
   fclose(outptr);
 
-  if (result)
-    return 0;
-  else {
-    fprintf(stderr, "I couldn't rotate your image.\n");
-    return 5;
-  }
+  return 0;
 }

@@ -7,8 +7,8 @@
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-image* rotate(double angle, image* src_img) {
-  angle *= 2 * M_PI / 360;  // radians
+image* img_rotate(const double degrees, image* const src_img) {
+  const double angle = 2 * M_PI * degrees / 360;  // radians
   const double cosine = cos(angle);
   const double sine = sin(angle);
 
@@ -36,8 +36,8 @@ image* rotate(double angle, image* src_img) {
 
   for (int x = 0; x < rotated->width; x++) {
     for (int y = 0; y < rotated->height; y++) {
-      int srcx = (int)((x + minx) * cosine + (y + miny) * sine);
-      int srcy = (int)((y + miny) * cosine - (x + minx) * sine);
+      int srcx = (int)ceil((x + minx) * cosine + (y + miny) * sine);
+      int srcy = (int)ceil((y + miny) * cosine - (x + minx) * sine);
       if (srcx >= 0 && srcx < src_img->width && srcy >= 0 && srcy < src_img->height) {
         rotated->pixels[y][x] = src_img->pixels[srcy][srcx];
       }
@@ -45,4 +45,9 @@ image* rotate(double angle, image* src_img) {
   }
 
   return rotated;
+}
+
+void img_free(image* img) {
+  for (int i = 0; i < img->height; i++) free(img->pixels[i]);
+  free(img);
 }
