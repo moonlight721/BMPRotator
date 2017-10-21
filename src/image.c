@@ -50,5 +50,6 @@ image* img_rotate(const double degrees, image* const src_img) {
 
 void img_free(image* img) {
   for (int i = 0; i < img->height; i++) free(img->pixels[i]);
+  free(img->pixels);
   free(img);
 }
