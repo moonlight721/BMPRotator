@@ -63,8 +63,8 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
   const double maxx = max(0, max(point1x, max(point2x, point3x)));
   const double maxy = max(0, max(point1y, max(point2y, point3y)));
 
-  bi.biWidth = (int)ceil(maxx - minx);
-  bi.biHeight = (int)ceil(maxy - miny);
+  bi.biWidth = (int)ceil(fabs(maxx) - minx);
+  bi.biHeight = (int)ceil(fabs(maxy) - miny);
 
   padding = (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
 
@@ -75,8 +75,8 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
 
   for (int x = 0; x < bi.biWidth; x++) {
     for (int y = 0; y < bi.biHeight; y++) {
-      int srcx = (int)((x + minx) * cosine + (y + miny) * sine);
-      int srcy = (int)((y + miny) * cosine - (x + minx) * sine);
+      int srcx = (int)ceil((x + minx) * cosine + (y + miny) * sine);
+      int srcy = (int)ceil((y + miny) * cosine - (x + minx) * sine);
       if (srcx >= 0 && srcx < src_width && srcy >= 0 && srcy < src_height) {
         ou[y][x] = inp[srcy][srcx];
       }
