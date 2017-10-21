@@ -73,12 +73,12 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
   fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, out);
 
   // iterate over outfile's scanlines
-  for (int i = 0, biHeight = abs(bi.biHeight); i < biHeight; i++) {
+  for (int x = 0; x < bi.biWidth; x++) {
     // iterate over pixels in line
-    for (int j = 0, biWidth = abs(bi.biWidth); j < biWidth; j++) {
-      int srcx = (int)ceil((j + minx) * cosine + (i + miny) * sine);
-      int srcy = (int)ceil((i + miny) * cosine - (j + minx) * sine);
-      if (srcx >= 0 && srcx < src_width && srcy >= 0 && srcy < src_height) {
+    for (int y = 0; y < bi.biHeight; y++) {
+      int srcx = (int)ceil((x + minx) * cosine + (y + miny) * sine);
+      int srcy = (int)ceil((y + miny) * cosine - (x + minx) * sine);
+      if (srcx >= 0 && srcx < src_height && srcy >= 0 && srcy < src_width) {
         fwrite(&inp[srcx][srcy], sizeof(RGBTRIPLE), 1, out);
       }
     }
