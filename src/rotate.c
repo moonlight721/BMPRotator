@@ -50,7 +50,7 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
   puts("I've finished itereate over infile's scanlines");
 
   // M_PI doesn't work and I don't know why
-  angle *= 2 * acos(-1) / 360; // radians
+  angle *= 2 * acos(-1) / 360;  // radians
   const double cosine = cos(angle);
   const double sine = sin(angle);
 
@@ -83,15 +83,12 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
       int srcx = (int)ceil((j + minx) * cosine + (i + miny) * sine);
       int srcy = (int)ceil((i + miny) * cosine - (j + minx) * sine);
       if (srcx >= 0 && srcx < src_width && srcy >= 0 && srcy < src_height) {
-
         fwrite(&inp[srcx][srcy], sizeof(RGBTRIPLE), 1, out);
       }
     }
     // add padding
-    for (int k = 0; k < padding; k++)
-      fputc(0x00, out);
+    for (int k = 0; k < padding; k++) fputc(0x00, out);
   }
 
   return true;
 }
-
