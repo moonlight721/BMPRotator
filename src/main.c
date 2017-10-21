@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-bool rotate(const double angle, FILE * const in, FILE* out);
+bool rotate(const double angle, FILE * const in, FILE* const out);
 
 int main(int argc, char *argv[])
 {
