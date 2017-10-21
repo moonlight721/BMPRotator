@@ -7,7 +7,7 @@ bool rotate(const double angle, FILE *const in, FILE *const out);
 int main(int argc, char *argv[]) {
   // ensure proper usage
   if (argc != 4) {
-    fprintf(stderr, "Usage: ./rotate infile outfile angle(degrees)\n");
+    fprintf(stderr, "Usage: ./rotate.o infile outfile angle(degrees)\n");
     return 1;
   }
 

@@ -72,6 +72,8 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
   // write outfile's BITMAPINFOHEADER
   fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, out);
 
+  RGBTRIPLE ou[bi.biHeight][bi.biWidth];
+
   // iterate over outfile's scanlines
   for (int x = 0; x < bi.biWidth; x++) {
     // iterate over pixels in line
@@ -79,8 +81,14 @@ bool rotate(double angle, FILE *const in, FILE *const out) {
       int srcx = (int)ceil((x + minx) * cosine + (y + miny) * sine);
       int srcy = (int)ceil((y + miny) * cosine - (x + minx) * sine);
       if (srcx >= 0 && srcx < src_height && srcy >= 0 && srcy < src_width) {
-        fwrite(&inp[srcx][srcy], sizeof(RGBTRIPLE), 1, out);
+        ou[x][y]=inp[srcx][srcy];
       }
+    }
+  }
+
+  for (int i = 0; i < bi.biHeight; i++) {
+    for (int j = 0; j < bi.biWidth; j++) {
+        fwrite(&ou[i][j], sizeof(RGBTRIPLE), 1, out);
     }
     // add padding
     for (int k = 0; k < padding; k++) fputc(0x00, out);
