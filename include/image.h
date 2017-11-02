@@ -18,4 +18,5 @@ typedef struct image {
 } image;
 
 image* img_rotate(const double, image* const);
-void img_free(image*);
+image* img_blur (const image * const src, const double r);
+	void img_free(image*);

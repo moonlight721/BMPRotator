@@ -6,8 +6,8 @@
 #include <image.h>
 
 int main(int argc, char *argv[]) {
-  if (argc != 4) {
-    fprintf(stderr, "Usage: ./rotate.o infile outfile angle(degrees)\n");
+  if (argc != 5) {
+    fprintf(stderr, "Usage: ./rotate.o infile outfile angle(degrees) radius(for blur)\n");
     return 1;
   }
 
@@ -20,17 +20,24 @@ int main(int argc, char *argv[]) {
     return 2;
   }
 
+  const double radius = atof(argv[4]);
+
+  if (radius <= 0) {
+    fprintf(stderr, "Incorrect radius\n");
+    return 4;
+  }
+
   FILE *inptr = fopen(infile, "r");
   if (inptr == NULL) {
     fprintf(stderr, "Could not open %s.\n", infile);
-    return 3;
+    return 4;
   }
 
   FILE *outptr = fopen(outfile, "w");
   if (outptr == NULL) {
     fclose(inptr);
     fprintf(stderr, "Could not create %s.\n", outfile);
-    return 4;
+    return 5;
   }
 
   image *src = from_bmp(inptr);
@@ -38,17 +45,15 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Could not recognize %s\n", infile);
     fclose(inptr);
     fclose(outptr);
-    return 5;
+    return 6;
   }
   image *rotated = img_rotate(angle, src);
   img_free(src);
-
-  if (rotated == NULL) {
-    fprintf(stderr, "I couldn't rotate your image.\n");
-  }
-
-  to_bmp(outptr, rotated);
+  image *blured = img_blur(rotated, radius);
   img_free(rotated);
+
+  to_bmp(outptr, blured);
+  img_free(blured);
 
   fclose(inptr);
   fclose(outptr);
