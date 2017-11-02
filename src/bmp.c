@@ -11,8 +11,9 @@ image* from_bmp(FILE* inptr) {
   fread(&bi, sizeof(BITMAPINFOHEADER), 1, inptr);
 
   if (bf.type != 0x4d42 || bf.off_bits != 54 || bi.size != 40 ||
-      bi.bit_count != 24 || bi.compression != 0)
+      bi.bit_count != 24 || bi.compression != 0) {
     return NULL;
+  }
 
   image* img = malloc(sizeof(image));
   img->height = bi.height;

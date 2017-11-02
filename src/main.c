@@ -34,12 +34,17 @@ int main(int argc, char *argv[]) {
   }
 
   image *src = from_bmp(inptr);
+  if (!src) {
+    fprintf(stderr, "Could not recognize %s\n", infile);
+    fclose(inptr);
+    fclose(outptr);
+    return 5;
+  }
   image *rotated = img_rotate(angle, src);
   img_free(src);
 
   if (rotated == NULL) {
     fprintf(stderr, "I couldn't rotate your image.\n");
-    return 5;
   }
 
   to_bmp(outptr, rotated);
